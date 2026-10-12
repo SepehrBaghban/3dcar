@@ -5,7 +5,7 @@ import { siteConfig } from "@/features/shared/config/site";
 import "@/features/shared/styles/globals.css";
 
 export const metadata: Metadata = {
-  title: `Lamborghini Aventador | ${siteConfig.name}`,
+  title: `Lamborghini Gallardo | ${siteConfig.name}`,
   description: siteConfig.description,
 };
 

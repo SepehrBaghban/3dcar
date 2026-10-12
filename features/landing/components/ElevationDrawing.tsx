@@ -2,14 +2,21 @@ import { formatNumber } from "@/features/shared/lib/format";
 import { ELEVATION_DIMENSIONS } from "@/features/landing/data/specs";
 
 /** Side elevation drawn in millimetres (1 SVG unit = 1 mm) so dimension lines are true to scale. */
-const VIEW_BOX = { x: -300, y: -650, width: 5380, height: 2250 } as const;
-const GROUND_Y = 1136;
-const WHEEL_RADIUS = 340;
-const FRONT_AXLE_X = 3740;
-const REAR_AXLE_X = FRONT_AXLE_X - ELEVATION_DIMENSIONS.wheelbase;
+const MARGIN = 300;
+const VIEW_BOX = {
+  x: -MARGIN,
+  y: -650,
+  width: ELEVATION_DIMENSIONS.length + 2 * MARGIN,
+  height: ELEVATION_DIMENSIONS.height + 1115,
+} as const;
+const GROUND_Y = ELEVATION_DIMENSIONS.height;
+const WHEEL_RADIUS = 325;
+const REAR_AXLE_X = 740;
+const FRONT_AXLE_X = REAR_AXLE_X + ELEVATION_DIMENSIONS.wheelbase;
 
+/** Side profile traced from the 3D model's mesh: tail at x = 0, nose at +x, roof at y = 0. */
 const SILHOUETTE =
-  "M 20 1000 L 0 820 L 0 470 L 140 300 L 790 270 L 1840 0 L 2440 0 L 3340 330 L 4680 620 L 4780 840 L 4700 1000 Z";
+  "M 40 1035 L 0 960 L 0 237 L 440 214 L 1240 90 L 1640 12 L 2200 0 L 2560 23 L 2840 99 L 3280 269 L 3600 308 L 3680 374 L 3880 429 L 4160 560 L 4345 679 L 4345 960 L 4290 1035 Z";
 
 type DimensionLineProps = {
   from: number;
@@ -58,7 +65,7 @@ export function ElevationDrawing() {
           </marker>
         </defs>
 
-        <line x1={-200} x2={4980} y1={GROUND_Y} y2={GROUND_Y} className="stroke-cyc-deep" strokeWidth={6} />
+        <line x1={-200} x2={ELEVATION_DIMENSIONS.length + 200} y1={GROUND_Y} y2={GROUND_Y} className="stroke-cyc-deep" strokeWidth={6} />
         <path d={SILHOUETTE} className="fill-cyc stroke-graphite" strokeWidth={14} strokeLinejoin="round" />
         {[REAR_AXLE_X, FRONT_AXLE_X].map((x) => (
           <g key={x}>

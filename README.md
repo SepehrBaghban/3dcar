@@ -1,4 +1,4 @@
-# Aventador 3D Showroom
+# Lamborghini Gallardo 3D Showroom
 
 نمایش سه‌بعدی و تعاملی خودرو برای پروپوزال نمایشگاه‌های منطقه آزاد.
 Next.js 16 (App Router)، React 19، React Three Fiber، Tailwind CSS 4، MUI 9.
