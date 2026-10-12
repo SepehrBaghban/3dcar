@@ -35,4 +35,14 @@ export const ENTER_INTERIOR_DISTANCE = 2.6;
 export const EXIT_INTERIOR_DISTANCE = 0.6;
 
 export const CAMERA_SMOOTH_TIME = 0.35;
+
+/** Gentle turntable spin on the overview shot; it pauses while the visitor interacts. */
+export const AUTO_ROTATE = {
+  /** Radians per second: one full turn takes about 40 seconds. */
+  speed: 0.15,
+  /** Quiet time after the last drag or zoom before the spin resumes. */
+  resumeDelayMs: 5000,
+  /** Caps the step after an idle gap (on-demand rendering has no frames while idle), so the car never jumps. */
+  maxFrameDelta: 1 / 30,
+} as const;
 export const FOV_EASING = 6;

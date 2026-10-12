@@ -18,11 +18,11 @@ function HeroHeadline() {
 
 export function HeroSection() {
   return (
-    <section id="showroom" aria-label="نمای سه‌بعدی خودرو" className="scroll-mt-16">
+    <section aria-label="نمای سه‌بعدی خودرو" className="flex flex-1 flex-col">
       <ShowroomViewer
         headline={<HeroHeadline />}
         backdropText="GALLARDO"
-        className="h-[82svh] min-h-[560px] lg:h-[calc(100svh-4rem)] lg:min-h-[640px]"
+        className="min-h-[560px] flex-1"
       />
     </section>
   );
