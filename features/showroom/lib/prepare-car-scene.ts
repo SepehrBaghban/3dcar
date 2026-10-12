@@ -1,4 +1,4 @@
-import { Box3, Group, Mesh, Vector3, type Object3D } from "three";
+import { Box3, Group, Mesh, MeshPhysicalMaterial, Vector3, type Object3D } from "three";
 import { MODEL_CONFIG } from "@/features/showroom/config/model";
 import type { PaintableMaterial } from "@/features/showroom/lib/materials";
 
@@ -12,16 +12,30 @@ function isPaintable(material: unknown): material is PaintableMaterial {
 }
 
 /**
+ * Any transmissive material makes three.js render the whole opaque scene a second time, every frame.
+ * On small lenses (tail lights, indicators) plain alpha blending looks the same at a fraction of the cost.
+ */
+function flattenTransmission(material: unknown) {
+  if (!(material instanceof MeshPhysicalMaterial) || material.transmission === 0) return;
+  material.transmission = 0;
+  material.transparent = true;
+}
+
+/**
  * One-time preparation of a loaded GLB, run once when the asset arrives (never per frame):
- * - wraps the cached scene in fresh groups, so it is idempotent under React Strict Mode
+ * - works on a clone of the cached scene: an Object3D has a single parent, so re-parenting the
+ *   cached scene itself would empty the previous result (Strict Mode runs useMemo twice and keeps
+ *   the first one). The clone shares geometries and materials, so it costs only the node objects.
  * - scales the car to its real length and sits it on the ground at the origin
  * - freezes matrices of static meshes and collects paint materials for cheap recolouring
+ * - replaces transmission with alpha blending to avoid an extra render pass
  */
 export function prepareCarScene(scene: Object3D): PreparedCar {
   const root = new Group();
   const orientation = new Group();
   orientation.rotation.y = MODEL_CONFIG.rotationY;
-  orientation.add(scene);
+  const car = scene.clone();
+  orientation.add(car);
   root.add(orientation);
   root.updateMatrixWorld(true);
 
@@ -34,13 +48,14 @@ export function prepareCarScene(scene: Object3D): PreparedCar {
   root.position.set(-center.x * scale, -bounds.min.y * scale, -center.z * scale);
 
   const paintMaterials = new Set<PaintableMaterial>();
-  scene.traverse((node) => {
+  car.traverse((node) => {
     node.matrixAutoUpdate = false;
     node.updateMatrix();
     if (!(node instanceof Mesh)) return;
 
     const materials: unknown[] = Array.isArray(node.material) ? node.material : [node.material];
     for (const material of materials) {
+      flattenTransmission(material);
       if (isPaintable(material) && MODEL_CONFIG.paintMaterialPattern.test(material.name)) {
         paintMaterials.add(material);
       }

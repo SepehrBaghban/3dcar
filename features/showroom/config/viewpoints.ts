@@ -38,22 +38,22 @@ export const VIEWPOINTS: Readonly<Record<ViewpointId, Viewpoint>> = {
     id: "wheel",
     label: "رینگ و ترمز",
     mode: "exterior",
-    position: [3.5, 0.75, 2.9],
-    target: [0.9, 0.36, 1.35],
+    position: [3.2, 0.7, 2.6],
+    target: [0.85, 0.36, 0.97],
   },
   cockpit: {
     id: "cockpit",
     label: "صندلی راننده",
     mode: "interior",
-    position: [0.36, 0.95, -0.3],
-    target: [0.36, 0.93, -0.25],
+    position: [0.32, 0.94, 0.07],
+    target: [0.32, 0.92, 0.12],
   },
   passenger: {
     id: "passenger",
     label: "صندلی سرنشین",
     mode: "interior",
-    position: [-0.36, 0.95, -0.3],
-    target: [-0.34, 0.93, -0.25],
+    position: [-0.32, 0.94, 0.07],
+    target: [-0.3, 0.92, 0.12],
   },
 };
 
