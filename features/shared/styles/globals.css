@@ -1,0 +1,63 @@
+/*
+ * Layer order matters: MUI's emotion styles live in the `mui` layer, so Tailwind
+ * utilities always win without `!important`.
+ */
+@layer theme, base, mui, components, utilities;
+
+@import "tailwindcss";
+@import "@fontsource-variable/vazirmatn";
+
+@theme {
+  --font-sans: "Vazirmatn Variable", ui-sans-serif, system-ui, sans-serif;
+
+  /* Photo-studio cyclorama palette */
+  --color-cyc: #e6e8eb;
+  --color-cyc-deep: #c9ced5;
+  --color-paper: #f6f7f8;
+  --color-graphite: #1c2028;
+  --color-steel: #5b6472;
+  --color-giallo: #e8ad0c;
+  --color-giallo-ink: #6b4f00;
+
+  --ease-studio: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-paper text-graphite font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-giallo);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
