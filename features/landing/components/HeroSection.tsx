@@ -7,7 +7,7 @@ function HeroHeadline() {
         <span dir="ltr">LP 560-4</span> کوپه
       </p>
       <h1 className="mt-1 text-4xl leading-[1.1] font-black tracking-tight text-graphite sm:text-5xl lg:text-6xl">
-        لامبورگینی گایاردو
+        لامبورگینی گالاردو
       </h1>
       <p className="mt-3 hidden max-w-sm text-sm leading-7 text-steel sm:block">
         دور خودرو بچرخید، روی نقطه‌ها بزنید یا آن‌قدر نزدیک شوید تا پشت فرمان بنشینید.
