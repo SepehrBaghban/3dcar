@@ -8,5 +8,7 @@ export const siteConfig = {
   developer: {
     label: "توسعه توسط شرکت هوش مصنوعی نقطه",
     url: "https://noghte.ai/",
+    logo: "/brand/noghte-logo.svg",
+    logoAlt: "لوگوی نقطه",
   },
 } as const;
