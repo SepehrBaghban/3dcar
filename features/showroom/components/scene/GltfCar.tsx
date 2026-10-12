@@ -10,9 +10,9 @@ type GltfCarProps = {
   onReady: () => void;
 };
 
-/** Production model: loaded from GLB (Draco + Meshopt aware), normalized once, recoloured on demand. */
+/** Production model: loaded from a Meshopt-compressed GLB, normalized once, recoloured on demand. */
 export function GltfCar({ onReady }: GltfCarProps) {
-  const { scene } = useGLTF(MODEL_CONFIG.url, MODEL_CONFIG.dracoDecoderPath);
+  const { scene } = useGLTF(MODEL_CONFIG.url, false, true);
   const { root, paintMaterials } = useMemo(() => prepareCarScene(scene), [scene]);
 
   usePaintSync(paintMaterials);

@@ -1,4 +1,4 @@
-import { Box3, Group, Mesh, Vector3, type Object3D } from "three";
+import { Box3, Group, Mesh, MeshPhysicalMaterial, Vector3, type Object3D } from "three";
 import { MODEL_CONFIG } from "@/features/showroom/config/model";
 import type { PaintableMaterial } from "@/features/showroom/lib/materials";
 
@@ -12,10 +12,21 @@ function isPaintable(material: unknown): material is PaintableMaterial {
 }
 
 /**
+ * Any transmissive material makes three.js render the whole opaque scene a second time, every frame.
+ * On small lenses (tail lights, indicators) plain alpha blending looks the same at a fraction of the cost.
+ */
+function flattenTransmission(material: unknown) {
+  if (!(material instanceof MeshPhysicalMaterial) || material.transmission === 0) return;
+  material.transmission = 0;
+  material.transparent = true;
+}
+
+/**
  * One-time preparation of a loaded GLB, run once when the asset arrives (never per frame):
  * - wraps the cached scene in fresh groups, so it is idempotent under React Strict Mode
  * - scales the car to its real length and sits it on the ground at the origin
  * - freezes matrices of static meshes and collects paint materials for cheap recolouring
+ * - replaces transmission with alpha blending to avoid an extra render pass
  */
 export function prepareCarScene(scene: Object3D): PreparedCar {
   const root = new Group();
@@ -41,6 +52,7 @@ export function prepareCarScene(scene: Object3D): PreparedCar {
 
     const materials: unknown[] = Array.isArray(node.material) ? node.material : [node.material];
     for (const material of materials) {
+      flattenTransmission(material);
       if (isPaintable(material) && MODEL_CONFIG.paintMaterialPattern.test(material.name)) {
         paintMaterials.add(material);
       }
